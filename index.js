@@ -29,7 +29,7 @@ app.use('/address', addressRoute);
 app.use('/trip', tripRoute);
 
 // Route chính
-app.get('/', (req, res) => res.send('Node.js'));
+app.get('/', (req, res) => res.send('Nguyen Dung'));
 
 // Khởi động server
 const PORT = process.env.PORT || 3000;
