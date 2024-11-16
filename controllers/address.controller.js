@@ -14,8 +14,8 @@ const addressController = {
     // Tạo mới một địa điểm
     createaddress: async (req, res) => {
         try {
-            const newAddress = new address(req.body);
-            const savedaddress = await newAddress.save();
+            const address = new address(req.body);
+            const savedaddress = await address.save();
             res.status(201).json(savedaddress);
         } catch (err) {
             res.status(500).json({ message: 'Error creating address', error: err.message });
@@ -25,7 +25,7 @@ const addressController = {
     // Xóa tất cả các địa điểm
     deleteAlladdresss: async (req, res) => {
         try {
-            await address.deleteMany({});
+            await address.deleteMany({}); // Xóa tất cả địa điểm
             res.status(200).json({ message: 'All addresss deleted successfully' });
         } catch (err) {
             res.status(500).json({ message: 'Error deleting addresss', error: err.message });
