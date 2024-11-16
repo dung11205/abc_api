@@ -20,9 +20,10 @@ app.use(express.json()); // Thêm middleware để parse JSON requests
 // Định nghĩa route cho các API
 const tripRoute = require('./routes/trip.route');
 const addressRoute = require('./routes/address.route');
-const userRoute = require('./routes/users.route');
 
+const userRoute = require('./routes/users.route');
 app.use('/user', userRoute);
+
 app.use('/address', addressRoute);
 app.use('/trip', tripRoute);
 
