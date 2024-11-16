@@ -7,7 +7,9 @@ const app = express();
 
 // Kết nối MongoDB
 mongoose
-  .connect('mongodb+srv://dung:dung1234@dung.dhy4z.mongodb.net/<your-database>?retryWrites=true&w=majority')
+  .connect('mongodb+srv://dung:dung1234@dung.dhy4z.mongodb.net/mydatabase?retryWrites=true&w=majority', {
+    writeConcern: { w: 'majority' }
+  })
   .then(() => {
     console.log('Connected to MongoDB Atlas');
   })
