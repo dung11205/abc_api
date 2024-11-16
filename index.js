@@ -8,7 +8,11 @@ const app = express();
 // Kết nối MongoDB
 mongoose
   .connect('mongodb+srv://dung:dung1234@dung.dhy4z.mongodb.net/mydatabase?retryWrites=true&w=majority', {
-    writeConcern: { w: 'majority' }
+    useNewUrlParser: true, // Sử dụng parser URL mới
+    useUnifiedTopology: true, // Dùng engine phát hiện máy chủ mới
+    ssl: true,
+    authSource: 'admin', // Nguồn xác thực
+    replicaSet: 'atlas-w0m6ls-shard-0' // Đảm bảo cấu hình replicaSet
   })
   .then(() => {
     console.log('Connected to MongoDB Atlas');
