@@ -5,24 +5,19 @@ require('dotenv').config();
 
 const app = express();
 
-// Kết nối MongoDB với async/await
-const connectDB = async () => {
-    try {
-        await mongoose.connect(process.env.MONGODB_URI, {
-            serverSelectionTimeoutMS: 5000, 
-            appName: 'dungApp', 
-        });
-        console.log('Connected to MongoDB Atlas');
-    } catch (err) {     
-        console.error('Error connecting to MongoDB:', err.message);
-        process.exit(1); // Dừng server nếu kết nối thất bại
-    }
-};
-connectDB();
+// Kết nối MongoDB
+mongoose.connect('mongodb+srv://dung:dung1234@dung.dhy4z.mongodb.net/?retryWrites=true&w=majority&appName=dung', {
+
+
+}).then(() => {
+    console.log('Connected to MongoDB Atlas');
+}).catch((err) => {
+    console.error('Error connecting to MongoDB:', err);
+});
 
 // Middleware
 app.use(cors());
-app.use(express.json()); // Middleware để parse JSON requests
+app.use(express.json()); // Thêm middleware để parse JSON requests
 
 // Định nghĩa route cho các API
 const tripRoute = require('./routes/trip.route');
@@ -34,7 +29,7 @@ app.use('/address', addressRoute);
 app.use('/trip', tripRoute);
 
 // Route chính
-app.get('/', (req, res) => res.send('Nguyen Dung'));
+app.get('/', (req, res) => res.send('Node.js'));
 
 // Khởi động server
 const PORT = process.env.PORT || 3000;
