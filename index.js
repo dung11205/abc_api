@@ -19,10 +19,12 @@ app.use(express.json()); // Thêm middleware để parse JSON requests
 
 // Định nghĩa route cho các API
 const tripRoute = require('./routes/trip.route');
-const addressRoute = require('./routes/address.route');
-
+const addressRoute = require('./routes/address.routes');
+const adminRoute = require('./routes/adm.router'); // Đảm bảo đã import đúng
 const userRoute = require('./routes/users.route');
+
 app.use('/user', userRoute);
+app.use('/admin', adminRoute);  // Đảm bảo đúng path '/admin'
 
 app.use('/address', addressRoute);
 app.use('/trip', tripRoute);
@@ -35,4 +37,3 @@ const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
-
