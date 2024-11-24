@@ -1,25 +1,29 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/users.model');
-const userController = require('../controllers/users.controller');
-const bcrypt = require('bcryptjs'); // Dùng để mã hóa và kiểm tra mật khẩu
-const jwt = require('jsonwebtoken'); // Dùng để tạo JWT token
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 // Secret key để tạo JWT token
-const SECRET_KEY = 'your_secret_key_here'; // Nên lưu trong .env file
+const SECRET_KEY = 'your_secret_key_here'; // Bạn có thể thay đổi giá trị này nếu cần
 
 // Đăng ký người dùng mới
 router.post('/signup', async (req, res) => {
     const { firstName, lastName, email, password, role } = req.body;
 
+    // Kiểm tra nếu thiếu trường dữ liệu
+    if (!email || !password || !firstName || !lastName) {
+        return res.status(400).json({ message: 'Missing required fields' });
+    }
+
     try {
-        // Kiểm tra nếu email đã tồn tại
+        // Kiểm tra xem email đã tồn tại trong database chưa
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: 'Email already exists' });
         }
 
-        // Mã hóa mật khẩu trước khi lưu
+        // Mã hóa mật khẩu trước khi lưu vào DB
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Tạo người dùng mới
@@ -36,35 +40,31 @@ router.post('/signup', async (req, res) => {
 router.post('/signin', async (req, res) => {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+        return res.status(400).json({ message: 'Email and password are required' });
+    }
+
     try {
-        // Tìm kiếm người dùng theo email
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        // So sánh mật khẩu
+        // So sánh mật khẩu đã mã hóa trong DB với mật khẩu người dùng nhập
         const isPasswordValid = await bcrypt.compare(password, user.password);
+
         if (!isPasswordValid) {
             return res.status(400).json({ message: 'Invalid password' });
         }
 
         // Tạo JWT token nếu đăng nhập thành công
         const token = jwt.sign({ id: user._id, role: user.role }, SECRET_KEY, { expiresIn: '1h' });
-
         res.status(200).json({ message: 'Login successful', token });
+
     } catch (error) {
+        console.error("Error logging in:", error);
         res.status(500).json({ message: 'Error logging in', error: error.message });
     }
 });
-
-// Lấy danh sách tất cả người dùng
-router.get('/users', userController.getuser);
-
-// Tạo mới một người dùng
-router.post('/create', userController.createuser);
-
-// Xóa tất cả người dùng
-router.delete('/deleteAll', userController.deleteAllusers);
 
 module.exports = router;
