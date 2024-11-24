@@ -36,7 +36,7 @@ app.use('/address', addressRoute);
 app.use('/trip', tripRoute);
 
 // Route chính
-app.get('/', (req, res) => res.send('API is running - dung1234'));
+app.get('/', (req, res) => res.send('API is running - dung123-aa'));
 
 // Khởi động server
 const PORT = process.env.PORT || 10000;

@@ -11,30 +11,31 @@ const SECRET_KEY = 'your_secret_key_here'; // Bạn có thể thay đổi giá t
 router.post('/signup', async (req, res) => {
     const { firstName, lastName, email, password, role } = req.body;
 
-    // Kiểm tra nếu thiếu trường dữ liệu
-    if (!email || !password || !firstName || !lastName) {
-        return res.status(400).json({ message: 'Missing required fields' });
+    // Kiểm tra và log thông tin để kiểm tra có được gửi đầy đủ không
+    console.log('Received data:', req.body);
+
+    if (!email || !password || !firstName || !lastName || !role) {
+        console.log('Missing required fields!');
+        return res.status(400).json({ message: 'Vui lòng điền đầy đủ thông tin!' });
     }
 
+    // Tiến hành các bước còn lại
     try {
-        // Kiểm tra xem email đã tồn tại trong database chưa
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: 'Email already exists' });
         }
 
-        // Mã hóa mật khẩu trước khi lưu vào DB
         const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Tạo người dùng mới
         const newUser = new User({ firstName, lastName, email, password: hashedPassword, role });
         await newUser.save();
 
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
-        res.status(500).json({ message: 'Error registering user', error: error.message });
+        res.status(500).json({ message: 'Error registering user', error });
     }
 });
+
 
 // Đăng nhập người dùng
 router.post('/signin', async (req, res) => {
@@ -68,3 +69,4 @@ router.post('/signin', async (req, res) => {
 });
 
 module.exports = router;
+//
