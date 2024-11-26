@@ -31,7 +31,7 @@ const userRoute = require('./routes/users.route');
 
 // Định nghĩa các routes cho API
 app.use('/user', userRoute);
-app.use('/admin', adminRoute);  // Đảm bảo đúng path '/admin'
+app.use('/admin', adminRoute);  
 app.use('/address', addressRoute);
 app.use('/trip', tripRoute);
 

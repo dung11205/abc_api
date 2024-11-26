@@ -68,5 +68,19 @@ router.post('/signin', async (req, res) => {
     }
 });
 
+router.get('/dss', userController.getuser);
+
+
+router.get('/dss/:id', userController.getUserById);
+
+
+router.put('/update/:id', userController.updateUserById);
+
+// Tạo mới một người dùng
+router.post('/create', userController.createuser);
+
+
+router.delete('/delete/:id', userController.deleteUserById);
+
 module.exports = router;
 //
