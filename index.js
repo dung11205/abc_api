@@ -29,6 +29,8 @@ const addressRoute = require('./routes/address.routes');
 const adminRoute = require('./routes/adm.router'); 
 const userRoute = require('./routes/users.route');
 
+
+
 // Định nghĩa các routes cho API
 app.use('/user', userRoute);
 app.use('/admin', adminRoute);  
